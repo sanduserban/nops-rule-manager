@@ -1,0 +1,46 @@
+- namespace name="components" components.plim
+- namespace name="defs" defs.plim
+---!
+    import os
+
+    WIDTHS = [8120, 5260, 3840, 2560, 1920, 1280, 1024, 768, 640, 320]
+    API_PREFIX = os.getenv("API_PREFIX") or "/api"
+
+    def srcset(image, ext, maxwidth=8120, factor=1):
+        return ','.join(f'/static/img/{image}/{width}_{image}.{ext} {int(round(width * factor))}w' for width in WIDTHS if width <= maxwidth)
+
+    class CLS:
+        def circle(color, size=3):
+            return f"rounded-full h-{size} w-{size} bg-{color} inline-block mr-3"
+
+
+doctype html
+html lang="en"
+    head
+        - call title="nOps" domain="nops-ui.netlify.com" description="No more Ops" short_description="No more Ops" defs:head
+        script src="https://unpkg.com/htmx.org@1.5.0"
+
+    body.flex.flex-col.flex-center
+        .flex.flex-col.flex-center.w-screen.${'md:w-[90vw]'}
+            h1.font-extrabold.text-6xl.text-mauve-lightgray.pt-[5vh].pb-4 nOps
+            h6.font-medium.text-gray-500.pb-[5vh] no more ops, we'll handle that
+
+            h2.font-extrabold.font-sans.text-2xl.${'md:text-4xl'}.text-mauve-gray.ml-4.pt-[5vh].pb-4.self-start Amazon Web Services
+            .-my-2.overflow-x-auto.${'sm:-mx-6'}.${'lg:-mx-8'}.w-full
+                .py-2.align-middle.inline-block.min-w-full.${'md:px-6'}.${'lg:px-8'}
+                    .shadow.overflow-hidden.border-b.border-gray-200.${'sm:rounded-lg'}
+                        -call id="aws" components:table
+
+            h2.font-extrabold.font-sans.text-2xl.${'md:text-4xl'}.text-mauve-gray.ml-4.pt-[5vh].pb-4.self-start Google Cloud Platform
+            .-my-2.overflow-x-auto.${'sm:-mx-6'}.${'lg:-mx-8'}.w-full
+                .py-2.align-middle.inline-block.min-w-full.${'md:px-6'}.${'lg:px-8'}
+                    .shadow.overflow-hidden.border-b.border-gray-200.${'sm:rounded-lg'}
+                        -call id="gcp" components:table
+        -coffee
+            loadRules = () ->
+              response = await fetch '${API_PREFIX}/rules'
+              rules = await response.json()
+
+              console.log(rules)
+
+            loadRules()

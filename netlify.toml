@@ -1,0 +1,10 @@
+[dev]
+  port = 3995
+  publish = "public"
+
+[build]
+  command = "make -j build && make -B html"
+  publish = "public/"
+[build.environment]
+  NODE_ENV = "production"
+  NODE_VERSION = "16"

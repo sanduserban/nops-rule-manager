@@ -1,0 +1,13 @@
+{
+    http_port 2021
+}
+
+http://localhost {
+    @server {
+        not path /static /static/*
+    }
+    reverse_proxy @server localhost:8000
+
+    root * public/
+    file_server
+}
