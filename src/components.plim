@@ -6,7 +6,8 @@
         def tag(color, size="xs"):
             return f"px-2 my-1 inline-flex text-{size} leading-5 font-semibold rounded-full bg-{color}-100 text-{color}-800 transition hover:bg-{color}-200 hover:text-{color}-900 hover:shadow cursor-pointer"
 
-    DATA = {"aws": {"ec2": {"check_ec2_autoscaling": {"breadcrumbTitle": "EC2 Autoscaling", "description": "Consider leveraging autoscaling for high availability and lower cost", "name": "Autoscaling disabled for EC2 instances\"", "pillar": "Reliability", "service": "ec2", "tags": ["AWS", "FTR", "WAFR"], "title": "Resources are part of autoscaling groups"}, "ec2_low_network_utilization": {"breadcrumbTitle": "EC2 low network traffic", "description": "Some description", "name": "EC2 low network traffic details", "pillar": "Cost", "service": "ec2", "tags": ["AWS", "FTR", "WAFR"], "title": "EC2 Low Network Traffic details"} }, "rds": {"rds_instances_without_multiaz": {"breadcrumbTitle": "EC2 Autoscaling", "description": "RDS instances are enabled for Multi-AZ. It provides high availability to quickly and automatically recover from infrastructure failures.", "name": "Enable Multi-AZ for RDS", "pillar": "Reliability", "service": "rds", "tags": ["AWS", "FTR", "WAFR"], "title": "Resources are part of autoscaling groups"} } }, "gcp": {"gcp_service": {"some_gcp_rule": {"breadcrumbTitle": "gcp breadcrump", "description": "gcp description", "name": "gcp", "pillar": "Reliability", "service": "gcp_service", "tags": ["GCP"], "title": "GCP Title"} } } }
+    DATA = {"aws": {"check_ec2_autoscaling": {"breadcrumbTitle": "EC2 Autoscaling", "description": "Consider leveraging autoscaling for high availability and lower cost", "name": "Autoscaling disabled for EC2 instances\"", "pillar": "Reliability", "service": "ec2", "tags": ["AWS", "FTR", "WAFR"], "title": "Resources are part of autoscaling groups"}, "ec2_low_network_utilization": {"breadcrumbTitle": "EC2 low network traffic", "description": "Some description", "name": "EC2 low network traffic details", "pillar": "Cost", "service": "ec2", "tags": ["AWS", "FTR", "WAFR"], "title": "EC2 Low Network Traffic details"}, "rds_instances_without_multiaz": {"breadcrumbTitle": "EC2 Autoscaling", "description": "RDS instances are enabled for Multi-AZ. It provides high availability to quickly and automatically recover from infrastructure failures.", "name": "Enable Multi-AZ for RDS", "pillar": "Reliability", "service": "rds", "tags": ["AWS", "FTR", "WAFR"], "title": "Resources are part of autoscaling groups"} }, "gcp": {"some_gcp_rule": {"breadcrumbTitle": "gcp breadcrump", "description": "gcp description", "name": "gcp", "pillar": "Reliability", "service": "gcp_service", "tags": ["GCP"], "title": "GCP Title"} } }
+
 
     def data(context):
         return addict.Dict(context.get("data") or DATA)
@@ -52,5 +53,4 @@
                     th.${CLS.th} scope="col" Helps with Compliance
             tbody.bg-white.divide-y.divide-gray-200
                 -for key, value in data(context)[id].items()
-                    -for service, svcdata in value.items()
-                        -call id="${id}" data=${svcdata} self:row
+                    -call id="${id}" data=${value} self:row
