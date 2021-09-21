@@ -6,8 +6,7 @@
         def tag(color, size="xs"):
             return f"px-2 my-1 inline-flex text-{size} leading-5 font-semibold rounded-full bg-{color}-100 text-{color}-800 transition hover:bg-{color}-200 hover:text-{color}-900 hover:shadow cursor-pointer"
 
-    DATA = {"aws": {"check_ec2_autoscaling": {"breadcrumbTitle": "EC2 Autoscaling", "description": "Consider leveraging autoscaling for high availability and lower cost", "name": "Autoscaling disabled for EC2 instances\"", "pillar": "Reliability", "service": "ec2", "tags": ["AWS", "FTR", "WAFR"], "title": "Resources are part of autoscaling groups"}, "ec2_low_network_utilization": {"breadcrumbTitle": "EC2 low network traffic", "description": "Some description", "name": "EC2 low network traffic details", "pillar": "Cost", "service": "ec2", "tags": ["AWS", "FTR", "WAFR"], "title": "EC2 Low Network Traffic details"}, "rds_instances_without_multiaz": {"breadcrumbTitle": "EC2 Autoscaling", "description": "RDS instances are enabled for Multi-AZ. It provides high availability to quickly and automatically recover from infrastructure failures.", "name": "Enable Multi-AZ for RDS", "pillar": "Reliability", "service": "rds", "tags": ["AWS", "FTR", "WAFR"], "title": "Resources are part of autoscaling groups"} }, "gcp": {"some_gcp_rule": {"breadcrumbTitle": "gcp breadcrump", "description": "gcp description", "name": "gcp", "pillar": "Reliability", "service": "gcp_service", "tags": ["GCP"], "title": "GCP Title"} } }
-
+    DATA = {"aws": {"check_ec2_autoscaling": {"breadcrumbTitle": "EC2 Autoscaling", "description": "Consider leveraging autoscaling for high availability and lower cost", "name": "Autoscaling disabled for EC2 instances\"", "pillar": "Reliability", "compliance": ["FTR", "WAFR"],"service": "ec2", "tags": ["AWS", "FTR", "WAFR", "AWS Config"], "title": "Resources are part of autoscaling groups"}, "ec2_low_network_utilization": {"breadcrumbTitle": "EC2 low network traffic", "description": "Some description", "name": "EC2 low network traffic details", "pillar": "Cost", "compliance": ["FTR", "WAFR"], "service": "ec2", "tags": ["AWS", "FTR", "WAFR"], "title": "EC2 Low Network Traffic details"}, "rds_instances_without_multiaz": {"breadcrumbTitle": "EC2 Autoscaling", "description": "RDS instances are enabled for Multi-AZ. It provides high availability to quickly and automatically recover from infrastructure failures.", "name": "Enable Multi-AZ for RDS", "pillar": "Reliability", "compliance": ["FTR", "WAFR"], "service": "rds", "tags": ["AWS", "FTR", "WAFR"], "title": "Resources are part of autoscaling groups"} }, "gcp": {"some_gcp_rule": {"breadcrumbTitle": "gcp breadcrump", "description": "gcp description", "name": "gcp", "pillar": "Reliability", "compliance": ["FTR", "WAFR"], "service": "gcp_service", "tags": ["GCP"], "title": "GCP Title"} } }
 
     def data(context):
         return addict.Dict(context.get("data") or DATA)
@@ -25,7 +24,7 @@
             .text-sm.text-gray-500.whitespace-pre-wrap ${data.pillar}
         td.px-2.py-1.${'md:px-6'}.${'md:py-4'}.whitespace-nowrap.flex.flex-wrap.max-w-[150px]
             -for tag in data.tags
-                button.${CLS.tag("green" if tag == "AWS" else "red")} hx-get="/filter?id=${id}&tag=${tag}" hx-target="#${id}" hx-swap="outerHTML"
+                button.${CLS.tag("orange" if tag == "AWS Config" else "red")} hx-get="/filter?id=${id}&tag=${tag}" hx-target="#${id}" hx-swap="outerHTML"
                     | ${tag}
 
         td.px-2.py-1.${'md:px-6'}.${'md:py-4'}.whitespace-nowrap.text-sm.text-gray-500.max-w-[120px]
@@ -33,7 +32,7 @@
 
         td.px-2.py-1.${'md:px-6'}.${'md:py-4'}.whitespace-nowrap.flex.flex-wrap.max-w-[150px]
             -for c in data.compliance
-                button.${CLS.tag("magenta")} hx-get="/filter?id=${id}&tag=${tag}" hx-target="#${id}" hx-swap="outerHTML"
+                button.${CLS.tag("blue")} hx-get="/filter?id=${id}&tag=${tag}" hx-target="#${id}" hx-swap="outerHTML"
                     | ${c}
 
 
